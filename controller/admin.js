@@ -454,24 +454,98 @@ let admin = {
          
         },
         getAll: async(req, res, next)=>{
-            const lesson = await Lesson.find()
-                res.status(400)
-                    .send({
-                        status: true,
-                        lesson
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+            
+            const user = User.findOne({ _id: data._id})
+                .then(user => {
+                   
+                    if(!user || (user.admin !== true)){
+                        return res.status(401)
+                            .send('Access denied')
+               
+                    }else{
+                        Lesson.find()
+                        .then(lesson=>{
+                            res.status(200)
+                                .send({
+                                    status: true,
+                                    lesson
                     });
+                        })
 
+                    }
+                })
+
+            
         },
     },
     tutor: {
-        update: async(req, res, next)=>{
+        update: (req, res, next)=>{
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+            
+            User.findOne({ _id: data._id})
+                .then(user => {
+                    
+                   
+                    if(!user || (user.admin !== true)){
+                        return res.status(401)
+                            .send('Access denied')
+               
+                    }else{
+                        const admin = req.body.admin;
+                        const userCategory = req.body.userCategory;
+
+                        const tutor_id = req.params.tutor_id;
+                        
+                        //check if the tutor exists
+                        User.findOne({_id: tutor_id, userCategory: userCategory})
+                            .then(user=>{
+                                if(!user){
+                                    return res.status(400)
+                                        .send('Tutor account does not exist')
+
+                                }else{
+                                    user.admin = admin;
+                                    user.userCategory = userCategory;
+
+                                    user.save()
+                                .then(()=>{
+                                    res.status(200)
+                                        .send({
+                                            status:true,
+                                            message: 'Update Successful',
+                                            user
+                                            
+                                        });
+                                })
+                                 
+
+
+                            }
+                            })
+                    }
+                })
 
         },
-        get: async(req, res, next)=>{
+        get: (req, res, next)=>{
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+            
+            const user = User.findOne({ _id: data._id})
+                .then(user => {
+                    
+                   
+                    if(!user || (user.admin !== true)){
+                        return res.status(401)
+                            .send('Access denied')
+               
+                    }else{
             // const category = req.params.category;
             const _id = req.params.lesson_id;
-            try {
-                let tutor = await User.find({_id:_id, userCategory: 'tutor'})
+            
+                let tutor = User.find({_id:_id, userCategory: 'tutor'})
                     if(!tutor){
                         console.log(1,'hi');
                         throw new Error()
@@ -480,22 +554,34 @@ let admin = {
                         res.status(200)
                         .send(tutor)
                     }
-
-               
-                    
-                
-        
-            } catch (error) {
-                res.status(400).send({ error: 'Something went wrong, check the manual' })
-            }
+                }
+            })
         },
-        getAll: async(req, res, next)=>{
-            const user = await User.find({userCategory: 'tutor'})
-            res.status(400)
-                .send({
-                    status: true,
-                    user
-                });
+        getAll: (req, res, next)=>{
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+            
+            const user = User.findOne({ _id: data._id})
+                .then(user => {
+                    
+                   
+                    if(!user || (user.admin !== true)){
+                        return res.status(401)
+                            .send('Access denied')
+               
+                    }else{
+                        User.find({userCategory: 'tutor'})
+                        .then(user=>{ console.log(1);
+                            res.status(200)
+                                .send({
+                                    status: true,
+                                    user
+                    });
+                        })
+
+                    }
+                })
+
         },
     }
 }

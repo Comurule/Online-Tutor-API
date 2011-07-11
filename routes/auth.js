@@ -30,7 +30,7 @@ router.get('/v1/lessons/:lesson_id', Admin.lesson.get);
 router.post('/v1/lessons/:lesson_id', Admin.lesson.update);
 router.delete('/v1/lessons/:lesson_id', Admin.lesson.delete);
 
-router.get('/v1/tutors', Admin.tutor.getAll);
+router.post('/v1/tutors', Admin.tutor.getAll);
 router.get('/v1/tutors/:tutor_id', Admin.tutor.get);
 router.get('/v1/tutors/:tutor_id', Admin.tutor.update);//for both deactivating and assigning admin status
   

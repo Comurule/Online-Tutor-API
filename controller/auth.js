@@ -218,7 +218,7 @@ let Person ={
     },
     tutor: {
         getAll: (req,res)=>{
-            const sort = req.body.sort;
+            const sort = req.body.sort;console.log(sort);
             switch (sort) {
                 case "name:1" :
                     User.find({'userCategory': 'tutor'}).sort({'name':  1})
@@ -235,7 +235,7 @@ let Person ={
                 default:User.find({'userCategory':'tutor'})
                     .then(user=>{
                         res.status(200)
-                         .json(user);
+                         .send('This is the general version');
                     })
                 break;
             };
