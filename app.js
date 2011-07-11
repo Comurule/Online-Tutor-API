@@ -9,9 +9,8 @@ app.use(authRoutes);
 
 
 mongoose
-    .connect(
-        "mongodb+srv://comurule:mystatus@comurule-qtddz.mongodb.net/test?retryWrites=true&w=majority",
-        { useNewUrlParser: true, useUnifiedTopology: true }
+    .connect("mongodb+srv://comurule:mystatus@comurule-qtddz.mongodb.net/test?retryWrites=true&w=majority",
+                    { useNewUrlParser: true, useUnifiedTopology: true }
     )
     .then(result => {
         console.log("Database connected");

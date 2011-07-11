@@ -217,28 +217,66 @@ let Person ={
         }
     },
     tutor: {
-        getAll: (req,res)=>{
-            const sort = req.body.sort;console.log(sort);
-            switch (sort) {
+        getAll: (req, res, next)=>{
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+            
+            const user = User.findOne({ _id: data._id})
+                .then(user => {
+                    
+                   
+                    if(!user || (user.userCategory !== 'student')){
+                        return res.status(401)
+                            .send('Access denied')
+               
+                    }else{
+
+                         switch (sort) {
                 case "name:1" :
-                    User.find({'userCategory': 'tutor'}).sort({'name':  1})
-                        .then(user=>{
+                    Subject.find({}).sort({'name':  1})
+                        .then(subject=>{
                             res.status(200)
                                 .send({
-                                    message: 'User sorted by name alphabetically in ascending order.',
-                                    user
+                                    message: 'Subjects sorted by name alphabetically in ascending order.',
+                                    subject
                                 });
                         })
                 
                 break;
-        
-                default:User.find({'userCategory':'tutor'})
-                    .then(user=>{
+
+                case "name:-1" :
+                    Subject.find({}).sort({'name':  1})
+                    .then(subject=>{
                         res.status(200)
-                         .send('This is the general version');
+                            .send({
+                                message: 'Subjects sorted by name alphabetically in descending order.',
+                                subject
+                            });
                     })
                 break;
-            };
+
+                case "category:1" :
+                    Subject.find({}).sort({'schoolCategory': 1})
+                    .then(subject=>{
+                        res.status(200)
+                            .send({
+                                message: 'Subjects sorted by category alphabetically.',
+                                subject
+                            });
+                    })
+                break;
+
+        
+                default:Subject.find({})
+                    .then(subject=>{
+                        res.status(200)
+                         .json(subject);
+                    })
+                break;
+
+                    }
+                })
+
         },
     },
 

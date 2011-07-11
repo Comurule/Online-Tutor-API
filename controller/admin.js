@@ -42,6 +42,9 @@ let admin = {
             const schoolCategory = (!req.body.category)? errorCount++ : req.body.category;
             const paramsCategory = req.params.category;
 
+            //check for errors
+            error(res);
+
               //check if the category exists
               Category.findOne({name:schoolCategory}).then(category=>{
                 if(!category){
@@ -277,8 +280,9 @@ let admin = {
     lesson: {
         create: async(req, res, next)=> {
             //taking paramters and validating 
+
             try {
-                const studentUser = await User.findOne({userName: req.body.studentUserName, userCategory:'student'})
+                const studentUser = await User.findOne({userName: req.body.student, userCategory:'student'})
                     if(!studentUser){console.log(1);throw new Error()}
                     
                     
@@ -286,7 +290,7 @@ let admin = {
                     if(!subjectName){console.log(2);throw new Error()}
                         
                     
-                const tutorUser = await User.findOne({userName:req.body.tutorUserName, userCategory:'tutor'})
+                const tutorUser = await User.findOne({userName:req.body.tutor, userCategory:'tutor'})
                     if(!tutorUser){console.log(3);throw new Error()}
                         
                 // }catch(error){
@@ -296,14 +300,14 @@ let admin = {
                 //             message: 'incorrect lesson details: Check the manual.'
                 //         })
                 // }
-            
-                
-                
            
-                let student = req.body.studentUserName;
-                let subject = req.body.subject;
-                let schoolCategory = req.body.category;
-                let tutor = req.body.tutorUserName;
+                let student = (!(req.body.student)||(req.body.student==''))? errorCount++:req.body.student;
+                let subject = (!(req.body.subject)||(req.body.subject==''))? errorCount++:req.body.subject;
+                let schoolCategory = (!(req.body.category)||(req.body.category==''))? errorCount++:req.body.category;
+                let tutor = !(req.body.tutor)? errorCount++:req.body.tutor;
+
+                //check for errors
+                error(res);
                     
                 //check if the lesson exists
                 let testLesson = await Lesson.find({student: student, subject:subject, schoolCategory: schoolCategory, tutor:tutor})
@@ -341,11 +345,11 @@ let admin = {
             try {
                 //taking parameters validation
                 
-                const  studentUser =await User.findOne({userName: req.body.studentUserName, userCategory:'student'})
+                const  studentUser =await User.findOne({userName: req.body.student, userCategory:'student'})
                     if(!studentUser){throw new Error()};
                 const  subjectName = await Subject.findOne({name: req.body.subject, schoolCategory: req.body.category})
                     if(!subjectName){throw new Error()};
-                const  tutorUser = await User.findOne({userName:req.body.tutorUserName, userCategory:'tutor'})
+                const  tutorUser = await User.findOne({userName:req.body.tutor, userCategory:'tutor'})
                     if(!tutorUser){throw new Error()};
                 
                 const _id= req.params.lesson_id;console.log(4);
@@ -536,7 +540,7 @@ let admin = {
             const user = User.findOne({ _id: data._id})
                 .then(user => {
                     
-                   
+                    
                     if(!user || (user.admin !== true)){
                         return res.status(401)
                             .send('Access denied')
@@ -557,15 +561,16 @@ let admin = {
                 }
             })
         },
-        getAll: (req, res, next)=>{
+        getAll://for both admins and students only
+         (req, res, next)=>{
             const token = req.header('Authorization').replace('Bearer ', '');
             const data = jwt.verify(token, 'secretkey');
             
             const user = User.findOne({ _id: data._id})
                 .then(user => {
                     
-                   
-                    if(!user || (user.admin !== true)){
+                    if(!user || (user.userCategory !== 'tutor') || (user.userCategory == 'tutor' && user.admin !== true)){
+                    
                         return res.status(401)
                             .send('Access denied')
                
