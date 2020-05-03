@@ -1,5 +1,5 @@
 <h2>Online-Tutor-API-v1||Register API</h2>
-<p> The <strong>Register API</strong> enables a user to create a profile in the database.</p>
+<p> The <strong>Register API</strong> enables a user to create a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section.</p>
 
 <code> POST   /register</code>
 
@@ -51,9 +51,9 @@
 <div>
     <h3>Example</h3>
         <pre>
-            fullName:Umechukwu Chibuike
-            userName:hello
-            email:umebuike@gmail.com
+            fullName:IDM Calculus
+            userName:IDMCalculus
+            email:idm@gmail.com
             password:hello
             userCategory: tutor
             schoolCategory:sss3
