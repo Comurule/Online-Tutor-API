@@ -50,7 +50,8 @@
 </div>
 <div>
     <h3>Example</h3>
-        <pre>fullName:Umechukwu Chibuike
+        <pre>
+            fullName:Umechukwu Chibuike
             userName:hello
             email:umebuike@gmail.com
             password:hello
