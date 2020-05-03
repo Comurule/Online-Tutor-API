@@ -7,26 +7,30 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    userName = {
+    userName: {
         type: String,
         required: true
     },
-    password = {
+    email: {
         type: String,
         required: true
     },
-    userCategory = {
+    password : {
+        type: String,
+        required: true
+    },
+    userCategory : {
         type: String,
         enum: ['student', 'tutor'],
         required: true
     },
-    schoolCategory = {
+    schoolCategory : {
         type: String,
         enum: ['pry1', 'pry2','pry3','pry4','pry5','pry6',
                 'jss1', 'jss2', 'jss3', 'sss1', 'sss2', 'sss3'],
         required: true
     },
-    subjects ={
+    subjects: {
         type: Array,
     }
     },
@@ -35,20 +39,8 @@ const userSchema = new Schema({
 
    
 
-//Schema for the subjects
-const subjectSchema = new Schema({
-    subjectName: {
-        type: String,
-        required: true
-    },
-    subjectCategory: {
-        type: String,
-        enum: ['pry1', 'pry2','pry3','pry4','pry5','pry6',
-                'jss1', 'jss2', 'jss3', 'sss1', 'sss2', 'sss3'],
-        required: true
-    }
-},{timestamps: true});
+
 
 
 module.exports = mongoose.model('User', userSchema);
-module.exports = mongoose.model('Subject', subjectSchema);
+
