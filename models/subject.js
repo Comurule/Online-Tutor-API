@@ -4,16 +4,19 @@ const Schema = mongoose.Schema;
 
 
 const subjectSchema = new Schema({
-    subjectName: {
+    name: {
         type: String,
         required: true
     },
-    subjectCategory: {
+    schoolCategory: {
         type: String,
-        enum: ['pry1', 'pry2','pry3','pry4','pry5','pry6',
-                'jss1', 'jss2', 'jss3', 'sss1', 'sss2', 'sss3'],
+        enum: ['primary', 'jss', 'sss'],
         required: true
-    }
+    },
+    tutor: [{
+        type: Schema.Types.ObjectId,
+        ref: 'tutor'
+    }],
 },{timestamps: true});
 
 

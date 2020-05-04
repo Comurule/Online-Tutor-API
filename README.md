@@ -11,14 +11,19 @@
             <th>Description</th>
         </tr>
         <tr>
-            <td>fullName</td>
+            <td>firstName</td>
             <td>string</td>
-            <td>Required. The full name of the user.</td>
+            <td>Required. The first name of the user.</td>
+        </tr>
+        <tr>
+            <td>lastName</td>
+            <td>string</td>
+            <td>Required. The last name of the user.</td>
         </tr>
         <tr>
             <td>userName</td>
             <td>string</td>
-            <td>Required. The preffered username of the user.</td>
+            <td>Required. The preffered username of the user. This must be unique in the system.</td>
         </tr>
         <tr>
             <td>email</td>
@@ -38,24 +43,53 @@
         <tr>
             <td>schoolCategory</td>
             <td>string</td>
-            <td>Required. User must choose from <strong>pry1</strong>, <strong>pry2</strong>, <strong>pry3</strong>, <strong>pry4</strong>, <strong>pry5</strong>, <strong>pry6</strong>, <strong>jss1</strong>, <strong>jss2</strong>, <strong>jss3</strong>, <strong>sss1</strong>, <strong>sss2</strong>, <strong>sss3 </strong> depending on the preffered class.           
-            </td>
-        </tr>
-        <tr>
-            <td>subject</td>
-            <td>array</td>
-            <td>Optional. User can choose the preffered subjects to learn. Always seperate each subject with a comma(,).</td>
+            <td>Required. User must choose between <strong>primary</strong>, <strong>jss</strong> and <strong>sss</strong> depending on the preffered school level.</td>
         </tr>
     </table>
 </div>
 <div>
     <h3>Example</h3>
         <pre>
-            fullName:IDM Calculus
+            firstName:IDM 
+            lastName:Calculus
             userName:IDMCalculus
             email:idm@gmail.com
             password:hello
             userCategory: tutor
-            schoolCategory:sss3
+            schoolCategory: primary
+        </pre>
+</div>
+
+<h1></h1>
+
+<h2>Online-Tutor-API-v1||Login API</h2>
+<p> The <strong>Login API</strong> enables a user to log into a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section.</p>
+
+<code> POST   /login</code>
+
+<div><h3>Parameters</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>userName</td>
+            <td>string</td>
+            <td>Required. The username of the user account to be open.</td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td>string</td>
+            <td>Required. Password to the user account.</td>
+        </tr>
+    </table>
+</div>
+<div>
+    <h3>Example</h3>
+        <pre>
+            userName:IDMCalculus
+            password:hello
         </pre>
 </div>

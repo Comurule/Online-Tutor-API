@@ -2,8 +2,13 @@ const mongoose = require ("mongoose");
 const Schema = mongoose.Schema;
 
 //Schema for the users
-const userSchema = new Schema({
-    fullName: {
+const userSchema = new Schema(
+    {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
@@ -24,17 +29,26 @@ const userSchema = new Schema({
         enum: ['student', 'tutor'],
         required: true
     },
+    admin:{
+        type: Boolean,
+        default: false,
+    },
     schoolCategory : {
         type: String,
-        enum: ['pry1', 'pry2','pry3','pry4','pry5','pry6',
-                'jss1', 'jss2', 'jss3', 'sss1', 'sss2', 'sss3'],
+        enum: ['primary', 'jss', 'sss'],
         required: true
     },
-    subjects: {
-        type: Array,
-    }
-    },
-    {timestamps: true});
+    bookedSubjects: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Subject'
+    }],
+    assignedSubjects:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Subject'
+    }],
+},
+    {timestamps: true}
+);
 
 
    
