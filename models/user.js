@@ -14,10 +14,12 @@ const userSchema = new Schema(
     },
     userName: {
         type: String,
+        unique: true,
         required: true
     },
     email: {
         type: String,
+        unique: true,
         required: true
     },
     password : {
@@ -34,13 +36,12 @@ const userSchema = new Schema(
         default: false,
     },
     schoolCategory : {
-        type: String,
-        enum: ['primary', 'jss', 'sss'],
-        required: true
-    },
-    bookedSubjects: [{
         type: Schema.Types.ObjectId,
-        ref: 'Subject'
+        ref: 'Category'
+    },
+    lesson: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Lesson'
     }],
     assignedSubjects:[{
         type: Schema.Types.ObjectId,

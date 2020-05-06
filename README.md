@@ -1,7 +1,7 @@
 <h2>Online-Tutor-API-v1||Register API</h2>
 <p> The <strong>Register API</strong> enables a user to create a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section.</p>
 
-<code> POST   /register</code>
+<code> POST   /v1/register</code>
 
 <div><h3>Parameters</h3>
     <table>
@@ -65,7 +65,7 @@
 <h2>Online-Tutor-API-v1||Login API</h2>
 <p> The <strong>Login API</strong> enables a user to log into a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section.</p>
 
-<code> POST   /login</code>
+<code> POST   /v1/login</code>
 
 <div><h3>Parameters</h3>
     <table>

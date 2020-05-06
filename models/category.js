@@ -1,17 +1,17 @@
-//Schema for the subjects
+//Schema for the category
 const mongoose = require ("mongoose");
 const Schema = mongoose.Schema;
 
 
-const subjectSchema = new Schema({
+const categorySchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    schoolCategory: {
-        type: Schema.Types.String,
-        ref: 'Category'
-    },
+    subjects: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Subject'
+    }],
     tutors: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -23,4 +23,4 @@ const subjectSchema = new Schema({
 },{timestamps: true});
 
 
-module.exports = mongoose.model('Subject', subjectSchema);
+module.exports = mongoose.model('Category', categorySchema);
