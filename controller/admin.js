@@ -24,7 +24,7 @@ const error= (res)=>{
 
 let admin = {
     subject: {
-        create: (req, res) => {
+        create: (req, res,next) => {
            
            
             //taking parameters
@@ -32,19 +32,14 @@ let admin = {
             const schoolCategory = (!req.body.category)? errorCount++ : req.body.category;
             const paramsCategory = req.params.category;
 
-            //check for the correct url
-            if(!(schoolCategory === paramsCategory)){
-                errorCount++
-                //show error status if error
-                error(res);
-            }else{
+            {
                 //check if the category exists
             Category.findOne({name:schoolCategory}).then(category=>{
                 if(!category){
-                    res.status(400)
-                        .send({
-                            status: false,
-                            message: 'This category does not exist'
+                    return res.status(400)
+                            .send({
+                                status: false,
+                                message: 'This category does not exist'
                         });
                 }else{
 
@@ -83,18 +78,85 @@ let admin = {
             }
             })}          
         },
-        update: (req, res)=>{
+        update: async(req, res,next)=>{
+            //taking parameters
+            const _id = req.params.subject_id;
+            const name = req.body.name;
+            const schoolCategory = req.body.category;
+            const paramsCategory = req.params.category;
+            try {
+                   //check if subject exists then read
+                let subject = await Subject.findById(_id)
+                    
+                    if(!subject){
+                        res.status(400)
+                            .send({status:false,
+                                message: _id + ' does not exist in the database. '})
+                    }
+                   {
+                //receive update parameters
+                subject.name=(name=='' || !name)?subject.name: name;
+                subject.schoolCategory = (schoolCategory =='' || !schoolCategory)?subject.schoolCategory: schoolCategory;
+                
+                //save the update
+                await subject.save()
+                    // if(error) {
+                    //     console.log(2);
+                    //     throw new Error()
+                    // } 
+                res.status(200)
+                    .send({
+                        status:true,
+                        message: 'Update successful',
+                        subject
+                    })
+                }
+            } catch (error) {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: 'Something went wrong, check the manual.'
+                    })
+            }
+         
 
         },
         
-        get: (req, res)=>{
-
+        delete: async(req, res, next)=>{
+            //taking parameters
+            const _id = req.params.subject_id;
+            const paramsCategory = req.params.category;
+            try {
+                   //check if subject exists then read
+                let subject = await Subject.findById(_id)
+                    if(!subject){
+                        res.status(400)
+                            .send({status:false,
+                                message: _id + ' does not exist in the database. '})
+                    }
+                   {
+                //delete subject
+                await Subject.deleteOne({_id: subject._id})
+                    // if(error){
+                    //     throw new Error()
+                    res.status(200)
+                        .send({
+                            status: true,
+                            message: subject.name + ' in '+subject.schoolCategory+
+                            ' category has been deleted successfully.'
+                        })
+                }                
+            } catch (error) {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: 'Something went wrong, check the manual.'
+                    })
+            }
         },
-        getAll: {},
-        delete: {},
+        
     },
     
-
     category: {
         create: (req, res) =>{
             //input variables
@@ -128,7 +190,107 @@ let admin = {
                         });
                     }
                 });
+        },
+        update: async(req, res, next)=>{
+            //taking parameters
+            const  name= req.body.name;
+            const _id= req.params.category_id;
+
+            try {
+                //check if category exists then read
+             let category = await Category.findById(_id)
+                 
+                 if(!category){
+                     res.status(400)
+                         .send({status:false,
+                             message: _id + ' does not exist in the database. '})
+                 }
+                {
+             //receive update parameters
+             category.name=(name=='' || !name)?category.name: name;
+             
+             
+             //save the update
+             await category.save()
+                 // if(error) {
+                 //     console.log(2);
+                 //     throw new Error()
+                 // } 
+             res.status(200)
+                 .send({
+                     status:true,
+                     message: 'Update successful',
+                     category
+                 })
+             }
+         } catch (error) {
+             res.status(400)
+                 .send({
+                     status: false,
+                     message: 'Something went wrong, check the manual.'
+                 })
+         }
+        },
+        delete: async(req, res, next)=>{
+            //taking parameters
+            const _id = req.params.category_id;
+            const paramsCategory = req.params.category;
+            try {
+                   //check if subject exists then read
+                let category = await Category.findById(_id)
+                    if(!category){
+                        res.status(400)
+                            .send({status:false,
+                                message: _id + ' does not exist in the database. '})
+                    }
+                   {
+                //delete subject
+                await Category.deleteOne({_id: category._id})
+                    // if(error){
+                    //     throw new Error()
+                    res.status(200)
+                        .send({
+                            status: true,
+                            message: category.name + ' category has been deleted successfully.'
+                        })
+                }                
+            } catch (error) {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: 'Something went wrong, check the manual.'
+                    })
+            }
         }
+    },
+
+    lesson: {
+        create: async(req, res, next)=> {
+
+        },
+        update: async(req, res, next)=>{
+
+        },
+        delete: async(req, res, next)=>{
+
+        },
+        get: async(req, res, next)=>{
+
+        },
+        getAll: async(req, res, next)=>{
+
+        },
+    },
+    tutor: {
+        update: async(req, res, next)=>{
+
+        },
+        get: async(req, res, next)=>{
+
+        },
+        getAll: async(req, res, next)=>{
+
+        },
     }
 }
 

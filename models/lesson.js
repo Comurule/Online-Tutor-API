@@ -5,20 +5,20 @@ const Schema = mongoose.Schema;
 
 const lessonSchema = new Schema({
     student: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     schoolCategory: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'Category'
     },
     
     subject: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'Subject'
         },
     tutor: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'User'
         },
     
