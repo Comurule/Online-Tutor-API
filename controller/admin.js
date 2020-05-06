@@ -25,58 +25,68 @@ const error= (res)=>{
 let admin = {
     subject: {
         create: (req, res,next) => {
-           
-           
-            //taking parameters
+            const token = req.header('Authorization').replace('Bearer ', '');
+            const data = jwt.verify(token, 'secretkey');
+
+            const user = User.findOne({ _id: data._id})
+                .then(user => {
+                    if(!user || (user.admin !== true)){
+                        res.status(401)
+                            .send('Access denied')
+               
+                    }
+                })
+                    {
+                        //taking parameters
             const name = (!req.body.name)? errorCount++ : req.body.name;
             const schoolCategory = (!req.body.category)? errorCount++ : req.body.category;
             const paramsCategory = req.params.category;
 
-            {
-                //check if the category exists
-            Category.findOne({name:schoolCategory}).then(category=>{
+              //check if the category exists
+              Category.findOne({name:schoolCategory}).then(category=>{
                 if(!category){
                     return res.status(400)
                             .send({
                                 status: false,
                                 message: 'This category does not exist'
-                        });
+                            });
                 }else{
-
-           
-          
-
-                //check if the new subject already exist
+                     //check if the new subject already exist
                 Subject.findOne({name})
                     .then(subject=>{
                         if(subject){
-                            
+                        
                             if(subject.schoolCategory = schoolCategory){
-                            return res.status(423)
-                                .send({
-                                    status: false,
-                                    message: name+ ' already exists in '+ schoolCategory+'.'
-                                });
-                        }else{
+                                return res.status(423)
+                                        .send({
+                                            status: false,
+                                            message: name+ ' already exists in '+ schoolCategory+'.'
+                                        });
+                            }else{
                             // save the subject
                             let subject = new Subject({name, schoolCategory});
                                 return subject.save()
-                                .then(()=>res.status(200).send({
-                                    status: true,
-                                    message: name + ' created successfully in '+schoolCategory
-                                    })
-                                ).catch(err=> {
-                                    console.log (err);
-                                    res.status(400)
-                                        .send({status: false,
+                                    .then(()=>res.status(200).send({
+                                        status: true,
+                                        message: name + ' created successfully in '+schoolCategory
+                                        })
+                                    ).catch(err=> {
+                                        console.log (err);
+                                        res.status(400)
+                                            .send({status: false,
                                                 message:''+ err});
                                         });
-                        };
-                    }
+                            };
+                        }
                         
-                    })
-            }
-            })}          
+                    });
+                }
+            })
+                    }          
+                    
+                
+            
+               
         },
         update: async(req, res,next)=>{
             //taking parameters
@@ -266,18 +276,190 @@ let admin = {
 
     lesson: {
         create: async(req, res, next)=> {
-
+            //taking paramters and validating 
+            try {
+                const studentUser = await User.findOne({userName: req.body.studentUserName, userCategory:'student'})
+                    if(!studentUser){console.log(1);throw new Error()}
+                    
+                    
+                const subjectName = await Subject.findOne({name:req.body.subject, schoolCategory: req.body.category})
+                    if(!subjectName){console.log(2);throw new Error()}
+                        
+                    
+                const tutorUser = await User.findOne({userName:req.body.tutorUserName, userCategory:'tutor'})
+                    if(!tutorUser){console.log(3);throw new Error()}
+                        
+                // }catch(error){
+                //     res.status(400)
+                //         .send({
+                //             status:false,
+                //             message: 'incorrect lesson details: Check the manual.'
+                //         })
+                // }
+            
+                
+                
+           
+                let student = req.body.studentUserName;
+                let subject = req.body.subject;
+                let schoolCategory = req.body.category;
+                let tutor = req.body.tutorUserName;
+                    
+                //check if the lesson exists
+                let testLesson = await Lesson.find({student: student, subject:subject, schoolCategory: schoolCategory, tutor:tutor})
+                    if(testLesson){
+                        return res.status(400)
+                                .send({
+                                    status: false,
+                                    message: 'Booking Failed: Seems you have booked before.'
+                                })
+                    }
+                //save lesson
+                
+                let lesson = new Lesson({ student,subject, schoolCategory, tutor});
+                
+                await lesson.save();
+                       
+                //response
+                res.status(200)
+                    .send({
+                        status: true,
+                        message: 'lesson booked successfully.'
+                    })
+                
+               
+            }catch(error){
+                res.status(400)
+                    .send({
+                        status:false,
+                        message: 'Something went wrong, check the manual'
+                    });
+            }
+            
         },
         update: async(req, res, next)=>{
+            try {
+                //taking parameters validation
+                
+                const  studentUser =await User.findOne({userName: req.body.studentUserName, userCategory:'student'})
+                    if(!studentUser){throw new Error()};
+                const  subjectName = await Subject.findOne({name: req.body.subject, schoolCategory: req.body.category})
+                    if(!subjectName){throw new Error()};
+                const  tutorUser = await User.findOne({userName:req.body.tutorUserName, userCategory:'tutor'})
+                    if(!tutorUser){throw new Error()};
+                
+                const _id= req.params.lesson_id;console.log(4);
 
+                //check if lesson exists then read
+                let lesson = await Lesson.findById(_id)
+                console.log(3);
+                 
+                     if(!lesson){
+                         res.status(400)
+                             .send({status:false,
+                                 message: _id + ' does not exist in the database. '})
+                     }
+                     console.log(2);
+                
+                {
+                    //set parameters
+                let student = req.body.studentUserName;
+                let subject = req.body.subject;
+                let schoolCategory = req.body.category;
+                let tutor = req.body.tutorUserName;
+             // update parameters validation
+             lesson.student = (student == '' || !student)?lesson.student: student;
+             lesson.subject = (subject == '' || !subject)?lesson.subject: subject;
+             lesson.schoolCategory = (schoolCategory == '' || !schoolCategory)?lesson.schoolCategory: schoolCategory;
+             lesson.tutor = (tutor == '' || !tutor)?lesson.tutor: tutor;
+             
+             console.log(1);
+             //save the update
+             await lesson.save()
+                 // if(error) {
+                 //     console.log(2);
+                 //     throw new Error()
+                 // } 
+             res.status(200)
+                 .send({
+                     status:true,
+                     message: 'Update successful',
+                     lesson
+                 })
+             }
+            } catch (error) {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: 'Something went wrong, check the manual.'
+                    })
+                }
         },
         delete: async(req, res, next)=>{
-
+            console.log(1);
+             //taking parameters
+             const _id = req.params.lesson_id;
+             const paramsCategory = req.params.category;
+                
+             try {
+                    //check if subject exists then read
+                 let lesson = await Lesson.findById(_id)
+                     if(!lesson){
+                         return res.status(400)
+                             .send({status:false,
+                                 message: _id + ' does not exist in the database. '})
+                     }
+                    {
+                 //delete subject
+                 await Lesson.deleteOne({_id: lesson._id})
+                    //  if(error){
+                    //      throw new Error()}
+                     res.status(200)
+                         .send({
+                             status: true,
+                             message: 'This lesson has been deleted successfully.'
+                         })
+                 }                
+             } catch (error) {
+                 console.log(error);
+                 res.status(400)
+                     .send({
+                         status: false,
+                         message: 'Something went wrong, check the manual.'
+                     })
+             }
+         
         },
         get: async(req, res, next)=>{
+            // const category = req.params.category;
+            const _id = req.params.lesson_id;
+            try {
+                let lesson = await Lesson.findById(_id)
+                    if(!lesson){
+                        console.log(1,'hi');
+                        throw new Error()
+                    }else{
+                    
+                        res.status(200)
+                        .send(lesson)
+                    }
 
+               
+                    
+                
+        
+            } catch (error) {
+                res.status(400).send({ error: 'Something went wrong, check the manual' })
+            }
+         
         },
         getAll: async(req, res, next)=>{
+            const lesson = await Lesson.find()
+                res.status(400)
+                    .send({
+                        status: true,
+                        lesson
+                    });
 
         },
     },
@@ -286,10 +468,34 @@ let admin = {
 
         },
         get: async(req, res, next)=>{
+            // const category = req.params.category;
+            const _id = req.params.lesson_id;
+            try {
+                let tutor = await User.find({_id:_id, userCategory: 'tutor'})
+                    if(!tutor){
+                        console.log(1,'hi');
+                        throw new Error()
+                    }else{
+                    
+                        res.status(200)
+                        .send(tutor)
+                    }
 
+               
+                    
+                
+        
+            } catch (error) {
+                res.status(400).send({ error: 'Something went wrong, check the manual' })
+            }
         },
         getAll: async(req, res, next)=>{
-
+            const user = await User.find({userCategory: 'tutor'})
+            res.status(400)
+                .send({
+                    status: true,
+                    user
+                });
         },
     }
 }

@@ -88,7 +88,8 @@ let Person ={
             //check for user in the database
             User.findOne({userName})
                 .then(user => {
-                    if(!user){return res.status(404)
+                    if(!user){ 
+                        return res.status(404)
                                     .send('User not found,check for errors or register.');
                             }
                     //check if the password is correct
@@ -100,13 +101,16 @@ let Person ={
                                 }
                                 //create token for further authorized actions
                                 const token = jwt.sign({ _id: user._id}, "secretkey");
+
+                                
                                 res.status(200)
                                     .send({
+                                        message: 'Login successful: Ensure to copy this token key for further authorized activities',
                                         _id: user._id,
                                         fullname: user.firstName +' '+user.lastName,
                                         username: user.userName,
-                                        Category: user.userCategory,
-                                        SchoolLevel: user.schoolCategory,
+                                        UserRole: user.userCategory,
+                                        Category: user.schoolCategory,
                                         token: token
                                     });
                             });          
@@ -115,7 +119,7 @@ let Person ={
                     res.status(400)
                         .send({status: false,
                                 message:''+ err});
-                        });   
+                        })  
         },   
     },
     subject: {
