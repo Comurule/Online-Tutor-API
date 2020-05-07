@@ -8,14 +8,14 @@ const lessonSchema = new Schema({
         type: Schema.Types.String,
         ref: 'User'
     },
-    schoolCategory: {
-        type: Schema.Types.String,
-        ref: 'Category'
-    },
-    
+        
     subject: {
         type: Schema.Types.String,
         ref: 'Subject'
+        },
+    schoolCategory: {
+        type: Schema.Types.String,
+        ref: 'Category'
         },
     tutor: {
         type: Schema.Types.String,

@@ -1,4 +1,5 @@
 const mongoose = require ("mongoose");
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 //Schema for the users
@@ -36,8 +37,11 @@ const userSchema = new Schema(
         default: false,
     },
     schoolCategory : {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.String,
         ref: 'Category'
+    },
+    subjects:{
+        type:Array
     },
     lesson: [{
         type: Schema.Types.ObjectId,
@@ -47,12 +51,11 @@ const userSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Subject'
     }],
+    
 },
     {timestamps: true}
 );
 
-
-   
 
 
 
