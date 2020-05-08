@@ -17,8 +17,9 @@ router.get('/v1/tutors', Admin.tutor.getAll);
 
 //admin roles
 router.post('/v1/subjects', Admin.subject.create);
-router.delete('/v1/subjects/:subject_id', Admin.subject.delete);
-router.post('/v1/subjects/:subject_id', Admin.subject.update);
+router.delete('/v1/subjects/:subject_id', Admin.subject.delete);//for both admin and tutors(tutors can only update regstered subjects)
+
+router.post('/v1/subjects/:subject_id', Admin.subject.update);//for both admin and tutors(tutors can only update regstered subjects)
 
 router.post('/v1/category', Admin.category.create);
 router.post('/v1/category/:category_id', Admin.category.update);
@@ -35,13 +36,13 @@ router.get('/v1/tutors/:tutor_id', Admin.tutor.get);
 router.post('/v1/tutors/:tutor_id', Admin.tutor.update);//for both deactivating and assigning admin status
   
 // //tutor roles
-// router.post('/v1/tutors/:username/register', Tutor.subject.register);
-// router.get('/v1/tutors/:username/', Tutor.subject.getAll);
-// router.post('/v1/tutors/:username/', Tutor.subject.update);
-// router.delete('/v1/tutors/:username/', Tutor.subject.delete);
+// router.post('/v1/subjects  /register', Tutor.subject.create);
+// router.get('/v1/subjects/:tutor_id', Tutor.subject.getAll);
+// router.post('/v1/tutors/:username', Admin.subject.update);//a registered subject
+// router.delete('/v1/tutors/:username', Admin.subject.delete);
 
 // //students roles
-// router.get('/v1/tutors/:subject/', Student.subject.getAll);//in a category
+// router.get('/v1/tutors/:subject_id/', Student.subject.getAll);//in a category
 // router.get('/v1/lesson', Admin.lesson.create);//copy Admin.lesson.create
 
 
@@ -49,7 +50,7 @@ router.post('/v1/tutors/:tutor_id', Admin.tutor.update);//for both deactivating 
 router.get('/v1/', (req, res) =>{
     res.send('Welcome to SNOSch--StartNG Online School. Kindly read the manual for guides.');
 });
-router.get('/v1/', (req, res) =>{
+router.post('/v1/', (req, res) =>{
     res.send('Welcome to SNOSch--StartNG Online School. Kindly read the manual for guides.');
 });
 

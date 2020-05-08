@@ -17,12 +17,24 @@ let Person ={
             const email = !(req.body.email)? errorCount++:req.body.email;
             const password = !(req.body.password)? errorCount++:req.body.password;
             const userCategory = !(req.body.userCategory)? errorCount++ :req.body.userCategory;
-            const subjects = req.body.subjects; 
-            const admin = 'false';
-            const schoolCategory = req.body.schoolCategory;
-            const assignedSubjects = req.body.assignedSubjects;
-          
-          
+            let subjects; 
+            let admin;
+            let schoolCategory = req.body.schoolCategory;
+            
+            Category.findOne({name:schoolCategory})
+                .then(category=>{
+                    if(!category){
+                        return res.status(400)
+                                .send({
+                                    status: false,
+                                    message: 'This category does not exist'
+                                })
+                    }else{
+                     schoolCategory = category._id
+                    return
+                    }
+                })
+                console.log(schoolCategory);
             //check for errors
             console.log(errorCount, 'counts');
             //show error status if error
@@ -49,7 +61,7 @@ let Person ={
                         //hashes the password before saving
                         bcrypt.hash(password, 12)
                             .then(password=>{
-                            let user = new User({firstName, lastName, userName, email, password, userCategory, admin, schoolCategory, subjects, assignedSubjects});
+                            let user = new User({firstName, lastName, userName, email, password, userCategory, admin, schoolCategory, subjects});
                             return user.save();
                             })
                             .then(()=>res.status(200)
@@ -86,7 +98,7 @@ let Person ={
             }
         
             //check for user in the database
-            User.findOne({userName})
+            User.findOne({userName}).populate('schoolCategory')
                 .then(user => {
                     if(!user){ 
                         return res.status(404)
@@ -231,50 +243,52 @@ let Person ={
                
                     }else{
 
-                         switch (sort) {
-                case "name:1" :
-                    Subject.find({}).sort({'name':  1})
-                        .then(subject=>{
+                        switch (sort) {
+                            case "name:1" :
+                                Subject.find({}).sort({'name':  1})
+                                .then(subject=>{
                             res.status(200)
                                 .send({
                                     message: 'Subjects sorted by name alphabetically in ascending order.',
                                     subject
                                 });
-                        })
+                                })
                 
-                break;
+                            break;
 
-                case "name:-1" :
-                    Subject.find({}).sort({'name':  1})
-                    .then(subject=>{
+                            case "name:-1" :
+                                Subject.find({}).sort({'name':  1})
+                                .then(subject=>{
                         res.status(200)
                             .send({
                                 message: 'Subjects sorted by name alphabetically in descending order.',
                                 subject
                             });
-                    })
-                break;
+                                })
+                            break;
 
-                case "category:1" :
-                    Subject.find({}).sort({'schoolCategory': 1})
-                    .then(subject=>{
+                            case "category:1" :
+                                Subject.find({}).sort({'schoolCategory': 1})
+                                .then(subject=>{
                         res.status(200)
                             .send({
                                 message: 'Subjects sorted by category alphabetically.',
                                 subject
                             });
-                    })
-                break;
+                                })
+                            break;
 
         
-                default:Subject.find({})
-                    .then(subject=>{
+                            default:Subject.find({})
+                                .then(subject=>{
                         res.status(200)
                          .json(subject);
-                    })
-                break;
-
+                                })
+                            break;
+                        }
                     }
+
+                    
                 })
 
         },

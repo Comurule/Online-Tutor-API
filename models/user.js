@@ -37,17 +37,15 @@ const userSchema = new Schema(
         default: false,
     },
     schoolCategory : {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'Category'
     },
-    subjects:{
-        type:Array
-    },
-    lesson: [{
+    
+    lessons: [{
         type: Schema.Types.ObjectId,
         ref: 'Lesson'
     }],
-    assignedSubjects:[{
+    subjects:[{
         type: Schema.Types.ObjectId,
         ref: 'Subject'
     }],
