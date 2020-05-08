@@ -230,19 +230,6 @@ let Person ={
     },
     tutor: {
         getAll: (req, res, next)=>{
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const data = jwt.verify(token, 'secretkey');
-            
-            const user = User.findOne({ _id: data._id})
-                .then(user => {
-                    
-                   
-                    if(!user || (user.userCategory !== 'student')){
-                        return res.status(401)
-                            .send('Access denied')
-               
-                    }else{
-
                         switch (sort) {
                             case "name:1" :
                                 Subject.find({}).sort({'name':  1})
@@ -285,12 +272,7 @@ let Person ={
                          .json(subject);
                                 })
                             break;
-                        }
-                    }
-
-                    
-                })
-
+                        }             
         },
     },
 

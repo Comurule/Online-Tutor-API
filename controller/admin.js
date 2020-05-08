@@ -25,21 +25,9 @@ const error= (res)=>{
 let admin = {
     subject: {
         create: (req, res,next) => {
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const data = jwt.verify(token, 'secretkey');
-
-            const user = User.findOne({ _id: data._id})
-                .then(user => {
-                    if(!user || (user.admin !== true)){
-                        res.status(401)
-                            .send('Access denied')
-               
-                    }
-                })
-                    {
-                        //taking parameters
+            //taking parameters
             const name = (!req.body.name)? errorCount++ : req.body.name;
-            const schoolCategory = (!req.body.category)? errorCount++ : req.body.category;
+            let schoolCategory = (!req.body.category)? errorCount++ : req.body.category;
             const paramsCategory = req.params.category;
 
             //check for errors
@@ -56,9 +44,8 @@ let admin = {
                 }else{
                      //check if the new subject already exist
                 Subject.findOne({name})
-                    .then(subject=>{
-                        if(subject){
-                        
+                    .then(subject=>{console.log(schoolCategory);
+                        if(subject){                        
                             if(subject.schoolCategory = schoolCategory){
                                 return res.status(423)
                                         .send({
@@ -66,12 +53,15 @@ let admin = {
                                             message: name+ ' already exists in '+ schoolCategory+'.'
                                         });
                             }else{
-                            // save the subject
+                                //get the schoolCategory id
+                                    category._id = schoolCategory;
+                                    
+                                 // save the subject
                             let subject = new Subject({name, schoolCategory});
                                 return subject.save()
                                     .then(()=>res.status(200).send({
                                         status: true,
-                                        message: name + ' created successfully in '+schoolCategory
+                                        message: name + ' created successfully in '+ req.body.category
                                         })
                                     ).catch(err=> {
                                         console.log (err);
@@ -80,12 +70,29 @@ let admin = {
                                                 message:''+ err});
                                         });
                             };
+                        }else{console.log(schoolCategory);
+                            //get the schoolCategory id
+                            schoolCategory = category._id ;
+                                    
+                            // save the subject
+                       let subject = new Subject({name, schoolCategory});
+                           return subject.save()
+                               .then(()=>res.status(200).send({
+                                   status: true,
+                                   message: name + ' created successfully in '+ req.body.category
+                                   })
+                               ).catch(err=> {
+                                   console.log (err);
+                                   res.status(400)
+                                       .send({status: false,
+                                           message:''+ err});
+                                });
+                       
                         }
                         
                     });
                 }
-            })
-                    }          
+            })          
                     
                 
             
@@ -266,7 +273,7 @@ let admin = {
                             status: true,
                             message: category.name + ' category has been deleted successfully.'
                         })
-                }                
+                } next();               
             } catch (error) {
                 res.status(400)
                     .send({
@@ -301,13 +308,11 @@ let admin = {
                 //         })
                 // }
            
-                let student = (!(req.body.student)||(req.body.student==''))? errorCount++:req.body.student;
-                let subject = (!(req.body.subject)||(req.body.subject==''))? errorCount++:req.body.subject;
-                let schoolCategory = (!(req.body.category)||(req.body.category==''))? errorCount++:req.body.category;
-                let tutor = !(req.body.tutor)? errorCount++:req.body.tutor;
-
-                //check for errors
-                error(res);
+               //set parameters
+               let student = studentUser._id;
+               let subject = subjectName._id;
+               let schoolCategory = subjectName.schoolCategory;
+               let tutor = tutorUser._id;
                     
                 //check if the lesson exists
                 let testLesson = await Lesson.find({student: student, subject:subject, schoolCategory: schoolCategory, tutor:tutor})
@@ -328,7 +333,8 @@ let admin = {
                 res.status(200)
                     .send({
                         status: true,
-                        message: 'lesson booked successfully.'
+                        message: 'lesson booked successfully.',
+                        lesson
                     })
                 
                
@@ -351,7 +357,13 @@ let admin = {
                     if(!subjectName){throw new Error()};
                 const  tutorUser = await User.findOne({userName:req.body.tutor, userCategory:'tutor'})
                     if(!tutorUser){throw new Error()};
-                
+                   //set parameters
+                   let student = studentUser._id;
+                   let subject = subjectName._id;
+                   let schoolCategory = subjectName.schoolCategory;
+                   let tutor = tutorUser._id;
+
+
                 const _id= req.params.lesson_id;console.log(4);
 
                 //check if lesson exists then read
@@ -366,11 +378,7 @@ let admin = {
                      console.log(2);
                 
                 {
-                    //set parameters
-                let student = req.body.studentUserName;
-                let subject = req.body.subject;
-                let schoolCategory = req.body.category;
-                let tutor = req.body.tutorUserName;
+                 
              // update parameters validation
              lesson.student = (student == '' || !student)?lesson.student: student;
              lesson.subject = (subject == '' || !subject)?lesson.subject: subject;
@@ -486,18 +494,6 @@ let admin = {
     },
     tutor: {
         update: (req, res, next)=>{
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const data = jwt.verify(token, 'secretkey');
-            
-            User.findOne({ _id: data._id})
-                .then(user => {
-                    
-                   
-                    if(!user || (user.admin !== true)){
-                        return res.status(401)
-                            .send('Access denied')
-               
-                    }else{
                         const admin = req.body.admin;
                         const userCategory = req.body.userCategory;
 
@@ -528,65 +524,59 @@ let admin = {
 
 
                             }
-                            })
-                    }
-                })
+                        })
+            
+                
 
         },
-        get: (req, res, next)=>{
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const data = jwt.verify(token, 'secretkey');
+        get:async (req, res, next)=>{
             
-            const user = User.findOne({ _id: data._id})
-                .then(user => {
-                    
-                    
-                    if(!user || (user.admin !== true)){
-                        return res.status(401)
-                            .send('Access denied')
-               
-                    }else{
             // const category = req.params.category;
             const _id = req.params.lesson_id;
             
-                let tutor = User.find({_id:_id, userCategory: 'tutor'})
-                    if(!tutor){
-                        console.log(1,'hi');
+                let tutor = await User.find({_id:_id, userCategory: 'tutor'})
+                    try{
+                        if(!tutor){
+                        
                         throw new Error()
-                    }else{
+                        }else{
                     
-                        res.status(200)
-                        .send(tutor)
-                    }
-                }
-            })
-        },
-        getAll://for both admins and students only
-         (req, res, next)=>{
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const data = jwt.verify(token, 'secretkey');
-            
-            const user = User.findOne({ _id: data._id})
-                .then(user => {
-                    
-                    if(!user || (user.userCategory !== 'tutor') || (user.userCategory == 'tutor' && user.admin !== true)){
-                    
-                        return res.status(401)
-                            .send('Access denied')
-               
-                    }else{
-                        User.find({userCategory: 'tutor'})
-                        .then(user=>{ console.log(1);
                             res.status(200)
-                                .send({
-                                    status: true,
-                                    user
-                    });
-                        })
-
+                            .send(tutor)
+                        }
+                    }catch(error) {
+                        res.status(400).send({ error: 'Something went wrong: Check the manual.' })
                     }
-                })
-
+            
+        },
+        getAll: async (req, res, next)=>{
+            switch (req.params.subject) {
+                case (req.params.subject):
+                    const name = req.params.subject;
+                    try{
+                        let subject= await findOne({name}).populate('tutors')
+                            if(!subject){throw new Error()}
+                        res.status(200)
+                            .send({
+                                status:true,
+                                result: subject.tutors
+                            })
+                    }catch{
+                        res.status(400).send({ error: 'Subject does not exists in the database' })
+                    }
+                    
+                    break;
+            
+                default:
+                    const user= await User.find({userCategory: 'tutor'})
+                     res.status(200)
+                        .send({
+                        status: true,
+                        user
+                        });
+                    break;
+            }    
+                 
         },
     }
 }
