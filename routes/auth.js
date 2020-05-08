@@ -47,10 +47,10 @@ router.post('/v1/tutors/:tutor_id', Admin.tutor.update);//for both deactivating 
 
 
 //default response
-router.get('/v1/', (req, res) =>{
+router.get('/', (req, res) =>{
     res.send('Welcome to SNOSch--StartNG Online School. Kindly read the manual for guides.');
 });
-router.post('/v1/', (req, res) =>{
+router.post('/', (req, res) =>{
     res.send('Welcome to SNOSch--StartNG Online School. Kindly read the manual for guides.');
 });
 
