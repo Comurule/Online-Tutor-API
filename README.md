@@ -1,5 +1,21 @@
 <h1>Online-Tutor-API-v1||Features</h1>
 
+<h3>Admin Details</h3><br/>
+<h4>King Abesh</h4>
+<pre>   userName:KingAbesh
+        email:abesh@gmail.com
+        password:hello
+</pre><br/>
+
+<h4>IDM Calculus</h4>
+<pre>   userName:IDMCalculus
+        email:idm@gmail.com
+        password:hello
+</pre>
+
+<h1></h1>
+
+<a href='https://snosch.herokuapp.com/'>Link To Heroku Website</a><br/>
 <a href="#1">Register API</a><br/>
 <a href='#2'>Login API</a><br/>
 <a href='#3'>Retrieve All Subjects API</a><br/>
