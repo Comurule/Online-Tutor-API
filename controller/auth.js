@@ -138,7 +138,7 @@ let Person ={
             const sort = req.body.sort;
             switch (sort) {
                 case "name:1" :
-                    Subject.find({}).sort({'name':  1}).populate('schoolCategory')
+                    Subject.find({}).sort({'name':  1})
                         .then(subject=>{
                             res.status(200)
                                 .send({
@@ -150,7 +150,7 @@ let Person ={
                 break;
 
                 case "name:-1" :
-                    Subject.find({}).sort({'name':  -1}).populate('schoolCategory')
+                    Subject.find({}).sort({'name':  -1})
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -161,7 +161,7 @@ let Person ={
                 break;
 
                 case "category:1" :
-                    Subject.find({}).sort({'schoolCategory': 1}).populate('schoolCategory')
+                    Subject.find({}).sort({'schoolCategory': 1})
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -172,7 +172,7 @@ let Person ={
                 break;
 
         
-                default:Subject.find({}).populate('schoolCategory')
+                default:Subject.find({})
                     .then(subject=>{
                         res.status(200)
                          .json(subject);
@@ -181,18 +181,17 @@ let Person ={
             };
         },
         get: async(req,res,next)=>{
+                
                 const _id = req.params.subject_id;
                 try {
                     let subject = await Subject.findById(_id)
                         if(!subject){
-                            
                             console.log(1,'hi');
                             throw new Error()
                         }else{
                             let category = await Category.findOne({name:req.params.category})
-                                if(!category){throw new Error()}
-                                if(!(subject.schoolCategory._id === category._id)){
-                                    console.log(category._id= subject.schoolCategory._id);
+                                if(!category){throw new Error}
+                                if(subject.schoolCategory !== category._id){
                                      console.log(2,'hi');
                                     throw new Error()
                                 }else{console.log(3,'hi');
@@ -232,6 +231,7 @@ let Person ={
     },
     tutor: {
         getAll: (req, res, next)=>{
+            const sort = req.body.sort;
                         switch (sort) {
                             case "firstName:1" :
                                 User.find({userCategory:'tutor'}).sort({'firstName':  1})
