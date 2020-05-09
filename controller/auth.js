@@ -18,9 +18,9 @@ let Person ={
             const password = !(req.body.password)? errorCount++:req.body.password;
             const userCategory = !(req.body.userCategory)? errorCount++ :req.body.userCategory;
             let subjects; 
-            let admin;
+            let admin = 'false';
             let schoolCategory = req.body.schoolCategory;
-            
+            //check if category exists
             Category.findOne({name:schoolCategory})
                 .then(category=>{
                     if(!category){
@@ -30,8 +30,7 @@ let Person ={
                                     message: 'This category does not exist'
                                 })
                     }else{
-                     schoolCategory = category._id
-                    return
+                        schoolCategory= category._id;
                     }
                 })
                 console.log(schoolCategory);
@@ -61,7 +60,7 @@ let Person ={
                         //hashes the password before saving
                         bcrypt.hash(password, 12)
                             .then(password=>{
-                            let user = new User({firstName, lastName, userName, email, password, userCategory, admin, schoolCategory, subjects});
+                            let user = new User({firstName, lastName, userName, email, password, userCategory, admin, schoolCategory});
                             return user.save();
                             })
                             .then(()=>res.status(200)
@@ -139,7 +138,7 @@ let Person ={
             const sort = req.body.sort;
             switch (sort) {
                 case "name:1" :
-                    Subject.find({}).sort({'name':  1})
+                    Subject.find({}).sort({'name':  1}).populate('schoolCategory')
                         .then(subject=>{
                             res.status(200)
                                 .send({
@@ -151,7 +150,7 @@ let Person ={
                 break;
 
                 case "name:-1" :
-                    Subject.find({}).sort({'name':  1})
+                    Subject.find({}).sort({'name':  -1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -162,7 +161,7 @@ let Person ={
                 break;
 
                 case "category:1" :
-                    Subject.find({}).sort({'schoolCategory': 1})
+                    Subject.find({}).sort({'schoolCategory': 1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -173,7 +172,7 @@ let Person ={
                 break;
 
         
-                default:Subject.find({})
+                default:Subject.find({}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                          .json(subject);
@@ -182,18 +181,21 @@ let Person ={
             };
         },
         get: async(req,res,next)=>{
-                const category = req.params.category;
                 const _id = req.params.subject_id;
                 try {
                     let subject = await Subject.findById(_id)
                         if(!subject){
+                            
                             console.log(1,'hi');
                             throw new Error()
                         }else{
-                        if(subject.schoolCategory !== category){
-                            
-                            throw new Error()
-                        }else{
+                            let category = await Category.findOne({name:req.params.category})
+                                if(!category){throw new Error()}
+                                if(!(subject.schoolCategory._id === category._id)){
+                                    console.log(category._id= subject.schoolCategory._id);
+                                     console.log(2,'hi');
+                                    throw new Error()
+                                }else{console.log(3,'hi');
                             res.status(200)
                             .send({message: subject.name + ' in '+  category+ ' category.',
                                             subject})
@@ -214,12 +216,12 @@ let Person ={
     category: {
         getAll: async(req, res, next) => {
                     try {
-                        let category = await Category.find()
+                        let category = await Category.find().populate('subjects')
                             if(!category){throw new Error()}
 
                         res.status(200)
                             .send({
-                                message: 'All categories',
+                                message: 'All categories and the subjects under them',
                                 category
                             })
                     }catch (error) {
@@ -231,45 +233,45 @@ let Person ={
     tutor: {
         getAll: (req, res, next)=>{
                         switch (sort) {
-                            case "name:1" :
-                                Subject.find({}).sort({'name':  1})
-                                .then(subject=>{
+                            case "firstName:1" :
+                                User.find({userCategory:'tutor'}).sort({'firstName':  1})
+                                .then(user=>{
                             res.status(200)
                                 .send({
-                                    message: 'Subjects sorted by name alphabetically in ascending order.',
-                                    subject
+                                    message: 'Tutors sorted by first name alphabetically in ascending order.',
+                                    user
                                 });
                                 })
                 
                             break;
 
-                            case "name:-1" :
-                                Subject.find({}).sort({'name':  1})
-                                .then(subject=>{
+                            case "firstName:-1" :
+                                User.find({userCategory:'tutor'}).sort({'firstName':  -1})
+                                .then(user=>{
                         res.status(200)
                             .send({
-                                message: 'Subjects sorted by name alphabetically in descending order.',
-                                subject
+                                message: 'Tutors sorted by firstName alphabetically in descending order.',
+                                user
                             });
                                 })
                             break;
 
                             case "category:1" :
-                                Subject.find({}).sort({'schoolCategory': 1})
-                                .then(subject=>{
+                                User.find({userCategory:'tutor'}).sort({'schoolCategory': 1})
+                                .then(user=>{
                         res.status(200)
                             .send({
-                                message: 'Subjects sorted by category alphabetically.',
-                                subject
+                                message: 'Tutors sorted by category alphabetically.',
+                                user
                             });
                                 })
                             break;
 
         
-                            default:Subject.find({})
-                                .then(subject=>{
+                            default:User.find({userCategory:'tutor'})
+                                .then(user=>{
                         res.status(200)
-                         .json(subject);
+                         .send(user);
                                 })
                             break;
                         }             

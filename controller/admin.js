@@ -41,7 +41,7 @@ let admin = {
                                 status: false,
                                 message: 'This category does not exist'
                             });
-                }else{
+                }else{schoolCategory= category._id;
                      //check if the new subject already exist
                 Subject.findOne({name})
                     .then(subject=>{console.log(schoolCategory);
@@ -53,17 +53,22 @@ let admin = {
                                             message: name+ ' already exists in '+ schoolCategory+'.'
                                         });
                             }else{
-                                //get the schoolCategory id
-                                    category._id = schoolCategory;
-                                    
+                                                                  
                                  // save the subject
                             let subject = new Subject({name, schoolCategory});
                                 return subject.save()
-                                    .then(()=>res.status(200).send({
+                                    .then(()=>{
+
+                                    //save to category
+                                    category.subjects = category.subject.push(subject._id)
+                                        category.save();
+
+                                        //responses
+                                    res.status(200).send({
                                         status: true,
                                         message: name + ' created successfully in '+ req.body.category
                                         })
-                                    ).catch(err=> {
+                                    }).catch(err=> {
                                         console.log (err);
                                         res.status(400)
                                             .send({status: false,
@@ -71,17 +76,21 @@ let admin = {
                                         });
                             };
                         }else{console.log(schoolCategory);
-                            //get the schoolCategory id
-                            schoolCategory = category._id ;
-                                    
+                            
                             // save the subject
                        let subject = new Subject({name, schoolCategory});
                            return subject.save()
-                               .then(()=>res.status(200).send({
+                               .then(()=>{
+                               //save to category
+                               category.subjects = category.subject.push(subject._id)
+                                    category.save();
+
+                               //response
+                               res.status(200).send({
                                    status: true,
                                    message: name + ' created successfully in '+ req.body.category
                                    })
-                               ).catch(err=> {
+                                }).catch(err=> {
                                    console.log (err);
                                    res.status(400)
                                        .send({status: false,
@@ -155,6 +164,10 @@ let admin = {
                                 message: _id + ' does not exist in the database. '})
                     }
                    {
+                    //delete from category
+                    let category = await Category.findOne({name: subject.schoolCategory})
+                    category.subjects = category.subjects.filter(items=> items !== _id)
+                     category.save();
                 //delete subject
                 await Subject.deleteOne({_id: subject._id})
                     // if(error){
@@ -174,7 +187,28 @@ let admin = {
                     })
             }
         },
-        
+        deleteAll: async(req, res, next)=>{
+            //taking parameters
+            const _id = req.params.category_id;
+            try {
+                 //get the category name
+                const category = await Category.findById(_id)
+                    if(!category){throw new Error()}
+
+                //delete subject
+                await Subject.deleteMany({schoolCategory:category.name})
+                    // if(error){
+                    //     throw new Error()
+                   console.log('Subjects deleted successfully');
+                               
+            } catch (error) {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: 'Something went wrong, check the manual.'
+                    })
+            }
+        },
     },
     
     category: {
@@ -315,7 +349,7 @@ let admin = {
                let tutor = tutorUser._id;
                     
                 //check if the lesson exists
-                let testLesson = await Lesson.find({student: student, subject:subject, schoolCategory: schoolCategory, tutor:tutor})
+                let testLesson = await Lesson.findOne({student: student, subject:subject, schoolCategory: schoolCategory, tutor:tutor})
                     if(testLesson){
                         return res.status(400)
                                 .send({
@@ -323,12 +357,18 @@ let admin = {
                                     message: 'Booking Failed: Seems you have booked before.'
                                 })
                     }
-                //save lesson
-                
+                //save lesson in lesson schema
                 let lesson = new Lesson({ student,subject, schoolCategory, tutor});
                 
                 await lesson.save();
-                       
+
+                //save lesson to student schema
+                studentUser.lessons = studentUser.lessons.push(lesson._id);
+                    await studentUser.save()
+                //save lesson to tutor schema
+                tutorUser.lessons = tutorUser.lessons.push(lesson._id)
+                    await tutorUser.save()
+
                 //response
                 res.status(200)
                     .send({
@@ -336,6 +376,7 @@ let admin = {
                         message: 'lesson booked successfully.',
                         lesson
                     })
+                
                 
                
             }catch(error){
@@ -388,17 +429,18 @@ let admin = {
              console.log(1);
              //save the update
              await lesson.save()
-                 // if(error) {
-                 //     console.log(2);
-                 //     throw new Error()
-                 // } 
+                
+                //save update to student 
+                //save update to tutor
+                //_id kuku no dey change, so it is auto changed
+
              res.status(200)
                  .send({
                      status:true,
                      message: 'Update successful',
                      lesson
                  })
-             }
+             } 
             } catch (error) {
                 res.status(400)
                     .send({
@@ -408,7 +450,7 @@ let admin = {
                 }
         },
         delete: async(req, res, next)=>{
-            console.log(1);
+            
              //taking parameters
              const _id = req.params.lesson_id;
              const paramsCategory = req.params.category;
@@ -422,10 +464,18 @@ let admin = {
                                  message: _id + ' does not exist in the database. '})
                      }
                     {
-                 //delete subject
+
+                    //delete from student
+                    studentUser.lessons = studentUser.lessons.filter(items=>items !==(lesson._id))
+                    //delete from tutor
+                    tutorUser.lessons = tutorUser.lessons.filter(items=>items !==(lesson._id))
+
+                 //delete lesson
                  await Lesson.deleteOne({_id: lesson._id})
                     //  if(error){
                     //      throw new Error()}
+
+                    
                      res.status(200)
                          .send({
                              status: true,
