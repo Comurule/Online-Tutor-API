@@ -138,7 +138,7 @@ let Person ={
             const sort = req.body.sort;
             switch (sort) {
                 case "name:1" :
-                    Subject.find({}).sort({'name':  1})
+                    Subject.find({}).sort({'name':  1}).populate('schoolCategory')
                         .then(subject=>{
                             res.status(200)
                                 .send({
@@ -150,7 +150,7 @@ let Person ={
                 break;
 
                 case "name:-1" :
-                    Subject.find({}).sort({'name':  -1})
+                    Subject.find({}).sort({'name':  -1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -161,7 +161,7 @@ let Person ={
                 break;
 
                 case "category:1" :
-                    Subject.find({}).sort({'schoolCategory': 1})
+                    Subject.find({}).sort({'schoolCategory': 1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                             .send({
@@ -172,7 +172,7 @@ let Person ={
                 break;
 
         
-                default:Subject.find({})
+                default:Subject.find({}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
                          .json(subject);
@@ -190,13 +190,13 @@ let Person ={
                             throw new Error()
                         }else{
                             let category = await Category.findOne({name:req.params.category})
-                                if(!category){throw new Error}
-                                if(subject.schoolCategory !== category._id){
+                                if(!category){console.log(4,'hi');throw new Error}
+                                if(!(subject.schoolCategory._id = category._id)){
                                      console.log(2,'hi');
                                     throw new Error()
                                 }else{console.log(3,'hi');
                             res.status(200)
-                            .send({message: subject.name + ' in '+  category+ ' category.',
+                            .send({message: subject.name + ' in '+  category.name + ' category.',
                                             subject})
                         }
                         }
@@ -234,7 +234,7 @@ let Person ={
             const sort = req.body.sort;
                         switch (sort) {
                             case "firstName:1" :
-                                User.find({userCategory:'tutor'}).sort({'firstName':  1})
+                                User.find({userCategory:'tutor'}).sort({'firstName':  1}).populate('schoolCategory')
                                 .then(user=>{
                             res.status(200)
                                 .send({
@@ -246,7 +246,7 @@ let Person ={
                             break;
 
                             case "firstName:-1" :
-                                User.find({userCategory:'tutor'}).sort({'firstName':  -1})
+                                User.find({userCategory:'tutor'}).sort({'firstName':  -1}).populate('schoolCategory')
                                 .then(user=>{
                         res.status(200)
                             .send({
@@ -257,7 +257,7 @@ let Person ={
                             break;
 
                             case "category:1" :
-                                User.find({userCategory:'tutor'}).sort({'schoolCategory': 1})
+                                User.find({userCategory:'tutor'}).sort({'schoolCategory': 1}).populate('schoolCategory')
                                 .then(user=>{
                         res.status(200)
                             .send({
@@ -268,7 +268,7 @@ let Person ={
                             break;
 
         
-                            default:User.find({userCategory:'tutor'})
+                            default:User.find({userCategory:'tutor'}).populate('schoolCategory')
                                 .then(user=>{
                         res.status(200)
                          .send(user);

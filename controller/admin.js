@@ -60,7 +60,7 @@ let admin = {
                                     .then(()=>{
 
                                     //save to category
-                                    category.subjects = category.subject.push(subject._id)
+                                    category.subjects.push(subject._id)
                                         category.save();
 
                                         //responses
@@ -82,7 +82,7 @@ let admin = {
                            return subject.save()
                                .then(()=>{
                                //save to category
-                               category.subjects = category.subject.push(subject._id)
+                               category.subjects.push(subject._id)
                                     category.save();
 
                                //response
@@ -122,17 +122,23 @@ let admin = {
                             .send({status:false,
                                 message: _id + ' does not exist in the database. '})
                     }
-                   {
+                   {//remove the subject Id from the current category
+                    let initialCategory = await Category.findOne({name:paramsCategory});console.log(1);
+                        initialCategory.subjects = initialCategory.subjects.filter(items=>items !== _id)
+                            initialCategory.save();
+
                 //receive update parameters
                 subject.name=(name=='' || !name)?subject.name: name;
                 subject.schoolCategory = (schoolCategory =='' || !schoolCategory)?subject.schoolCategory: schoolCategory;
                 
                 //save the update
                 await subject.save()
-                    // if(error) {
-                    //     console.log(2);
-                    //     throw new Error()
-                    // } 
+                    //save subject to the updated category
+                let category = Category.findOne({name:subject.schoolCategory})
+                    category.subjects.push(_id);
+                    category.save()
+
+                    //response
                 res.status(200)
                     .send({
                         status:true,
