@@ -123,7 +123,7 @@ let admin = {
                                 message: _id + ' does not exist in the database. '})
                     }
                    {//remove the subject Id from the current category
-                    let initialCategory = await Category.findOne({name:paramsCategory});console.log(1);
+                    let initialCategory = await Category.findOne({name:subject.schoolCategory});
                         initialCategory.subjects = initialCategory.subjects.filter(items=>items !== _id)
                             initialCategory.save();
 
@@ -147,6 +147,7 @@ let admin = {
                     })
                 }
             } catch (error) {
+                console.log(error);
                 res.status(400)
                     .send({
                         status: false,
@@ -186,6 +187,7 @@ let admin = {
                         })
                 }                
             } catch (error) {
+                console.log(error);
                 res.status(400)
                     .send({
                         status: false,

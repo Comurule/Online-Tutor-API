@@ -189,8 +189,8 @@ let Person ={
                             console.log(1,'hi');
                             throw new Error()
                         }else{
-                            let category = await Category.findOne({name:req.params.category})
-                                if(!category){console.log(4,'hi');throw new Error}
+                            let category = await Category.findOne({name:(req.params.category)})
+                                if(!category){console.log(4,req.params.category);throw new Error}
                                 if(!(subject.schoolCategory._id = category._id)){
                                      console.log(2,'hi');
                                     throw new Error()
