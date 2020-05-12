@@ -4,15 +4,12 @@ const Admin = require('../controller/admin');
 const Tutor = require('../controller/tutor');
 const Student = require('../controller/student');
 const auth = require('../controller/token');
-const userRoutes = require('./userRoutes.js');
 
 
-//trying tp redirect routes
-router.use('/v1', userRoutes);
+ const subjectRoutes = router.get('', auth.AdminStudent, Person.subject.getAll);// for both admins and students
+//by name, sorted in alphabetically in ascending order
+//by category
 
-//default response
-router.use('/', (req, res) =>{
-    res.send('Welcome to SNOSch--StartNG Online School. Kindly read the manual for guides.');
-});
 
-module.exports = router;
+
+module.exports = subjectRoutes;
