@@ -19,7 +19,7 @@ let Person ={
             const userCategory = !(req.body.userCategory)? errorCount++ :req.body.userCategory;
             let subjects; 
             let admin = 'false';
-            let schoolCategory = req.body.schoolCategory;
+            let schoolCategory = !(req.body.schoolCategory)? errorCount++ :req.body.schoolCategory;
             //check if category exists
             Category.findOne({name:schoolCategory})
                 .then(category=>{
@@ -30,7 +30,7 @@ let Person ={
                                     message: 'This category does not exist'
                                 })
                     }else{
-                        schoolCategory= category._id;
+                        return schoolCategory= category._id;
                     }
                 })
                 console.log(schoolCategory);
@@ -143,7 +143,12 @@ let Person ={
                             res.status(200)
                                 .send({
                                     message: 'Subjects sorted by name alphabetically in ascending order.',
-                                    subject
+                                    results:{
+                                        _id:subject._id,
+                                        name:subject.name,
+                                        category:subject.schoolCategory,
+
+                                    }
                                 });
                         })
                 
@@ -153,10 +158,12 @@ let Person ={
                     Subject.find({}).sort({'name':  -1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
-                            .send({
+                        if(subject==''){res.send('no subject registered')}
+                        else{
+                         res.send({
                                 message: 'Subjects sorted by name alphabetically in descending order.',
                                 subject
-                            });
+                            });}
                     })
                 break;
 
@@ -164,10 +171,12 @@ let Person ={
                     Subject.find({}).sort({'schoolCategory': 1}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
-                            .send({
+                        if(subject==''){res.send('no subject registered')}
+                        else{
+                         res.send({
                                 message: 'Subjects sorted by category alphabetically.',
                                 subject
-                            });
+                            });}
                     })
                 break;
 
@@ -175,7 +184,9 @@ let Person ={
                 default:Subject.find({}).populate('schoolCategory')
                     .then(subject=>{
                         res.status(200)
-                         .json(subject);
+                        if(subject==''){res.send('no subject registered')}
+                        else{
+                         res.json(subject);}
                     })
                 break;
             };
@@ -189,16 +200,11 @@ let Person ={
                             console.log(1,'hi');
                             throw new Error()
                         }else{
-                            let category = await Category.findOne({name:(req.params.category)})
-                                if(!category){console.log(4,req.params.category);throw new Error}
-                                if(!(subject.schoolCategory._id = category._id)){
-                                     console.log(2,'hi');
-                                    throw new Error()
-                                }else{console.log(3,'hi');
+                                                          
                             res.status(200)
                             .send({message: subject.name + ' in '+  category.name + ' category.',
                                             subject})
-                        }
+                        
                         }
 
                    

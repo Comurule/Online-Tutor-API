@@ -26,25 +26,30 @@ const error= (res)=>{
 let tutor={
     subject: {
         create: async(req, res, next)=>{
-            const subjectName = await Subject.findOne({name:req.body.name, schoolCategory:req.body.category})
-                if(!subjectName){errorcount++}
+        try{
+            const category = await Category.findOne({name:req.body.category})
+            const subjectName = await Subject.findOne({name:req.body.name, schoolCategory:category._id})
+                if(!subjectName){throw new Error()}
+                console.log(req.user.subjects.filter(items=>items==subjectName._id))
                const subject = subjectName._id;
                const tutor = req.user._id
             //save the registration into the subject schema
-            subjectName.tutors = subjectName.tutors.push(tutor);
-                await subjectName.save(err=>{errorCount++})
+            subjectName.tutors.push(tutor);
+                await subjectName.save()
 
             //save to User schema
-            req.user.subjects  = req.user.subjects.push(subject)
-                await req.user.save(err=>{errorCount++})
-                //show error if any
-                error(res);
+             req.user.subjects.push(subject)
+                await req.user.save()
+                
 
                 res.status(200)
                     .send({
                         message: 'Registration Successful',
                         tutor: req.user
                     })
+                }catch (error) {console.log(error);
+                    res.status(400).send({ error: 'Something went wrong, check the manual' })
+                }
 
         },
         update: async(req, res, next)=>{

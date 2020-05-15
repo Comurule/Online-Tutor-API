@@ -3,7 +3,11 @@ const User = require('../models/user');
 
 const auth ={
     adminAuth: async(req, res, next) => {
-        const token = req.header('Authorization').replace('Bearer ', '')
+        if((req.header('Authorization')=='') || !(req.header('Authorization'))){
+            throw new Error()
+            }else{
+            const token = req.header('Authorization').replace('Bearer ', '');
+            
         
         try {
             const data = jwt.verify(token, "secretkey")
@@ -12,11 +16,12 @@ const auth ={
                 if(!user || (user.admin !== true)){
                  throw new Error()
                 }         
-        
+                req.user = user;
                 next()
             } catch (error) {
                     res.status(401).send({ error: 'Not authorized to access this resource' })
                 }
+            }
 
     },
 
@@ -27,7 +32,7 @@ const auth ={
             const data = jwt.verify(token, 'secretkey')
                 if(!data){throw new Error()}
             const user = await User.findOne({ _id: data._id})
-                if (!user || (user.userCategory !=='tutor') ||(user.userCategory =='tutor' && user.admin !== false) ) {
+                if (!user || (user.userCategory !=='tutor') ) {
                  throw new Error()
                 }         
                 req.user = user;
