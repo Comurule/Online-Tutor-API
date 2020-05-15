@@ -240,7 +240,7 @@ let Person ={
             const sort = req.body.sort;
                         switch (sort) {
                             case "firstName:1" :
-                                User.find({userCategory:'tutor'}).sort({'firstName':  1}).populate('schoolCategory')
+                                User.find({userCategory:'tutor'}).sort({'firstName':  1})
                                 .then(user=>{
                             res.status(200)
                                 .send({
@@ -252,7 +252,7 @@ let Person ={
                             break;
 
                             case "firstName:-1" :
-                                User.find({userCategory:'tutor'}).sort({'firstName':  -1}).populate('schoolCategory')
+                                User.find({userCategory:'tutor'}).sort({'firstName':  -1})
                                 .then(user=>{
                         res.status(200)
                             .send({
@@ -263,7 +263,7 @@ let Person ={
                             break;
 
                             case "category:1" :
-                                User.find({userCategory:'tutor'}).sort({'schoolCategory': 1}).populate('schoolCategory')
+                                User.find({userCategory:'tutor'}).sort({'schoolCategory': 1})
                                 .then(user=>{
                         res.status(200)
                             .send({
@@ -274,7 +274,7 @@ let Person ={
                             break;
 
         
-                            default:User.find({userCategory:'tutor'}).populate('schoolCategory')
+                            default:User.find({userCategory:'tutor'})
                                 .then(user=>{
                         res.status(200)
                          .send(user);

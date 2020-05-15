@@ -33,20 +33,35 @@ let tutor={
                 console.log(req.user.subjects.filter(items=>items==subjectName._id))
                const subject = subjectName._id;
                const tutor = req.user._id
-            //save the registration into the subject schema
-            subjectName.tutors.push(tutor);
-                await subjectName.save()
 
-            //save to User schema
-             req.user.subjects.push(subject)
-                await req.user.save()
-                
+               //check if the subject has been registered before by same user
+               for (let i = 0; i < subjectName.length; i++) {
+                   const tutorId = subjectName[i];
+                   if(tutor=tutorId){
+                       res.status(400)
+                        .send({
+                            status: false,
+                            error: 'You have registered this subject'
+                        })
+                    }else{
+                         //save the registration into the subject schema
+                        subjectName.tutors.push(tutor);
+                            await subjectName.save()
 
-                res.status(200)
-                    .send({
-                        message: 'Registration Successful',
-                        tutor: req.user
-                    })
+                        //save to User schema
+                         req.user.subjects.push(subject)
+                            await req.user.save()
+            
+
+                            res.status(200)
+                                .send({
+                                    message: 'Registration Successful',
+                                    tutor: req.user
+                                })
+                    }
+                   
+               }
+           
                 }catch (error) {console.log(error);
                     res.status(400).send({ error: 'Something went wrong, check the manual' })
                 }
@@ -60,7 +75,7 @@ let tutor={
         },
         getAll: async(req, res, next)=>{
             const _id = req.params.tutor_id;
-            const tutor = await User.findOne({_id:_id, userCategory:'tutor'}).populated('subjects')
+            const tutor = await User.findOne({_id:_id, userCategory:'tutor'}).populate('subjects')
                 if(!tutor){
                     res.status(400)
                         .send({
@@ -71,7 +86,7 @@ let tutor={
                     res.status(200)
                         .send({
                             status:true,
-                            message:'Registered subjects<br/>' +tutor.subjects
+                            'Registered Subjects': tutor.subjects
                         })
                 }
 

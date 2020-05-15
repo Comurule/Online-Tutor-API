@@ -647,7 +647,7 @@
 <h4>Authorized Users:</h4>
 <p>Only Tutors</p>
 
-<code> POST   /v1/subjects/:tutor_id</code>
+<code> GET   /v1/subjects/tutors/:tutor_id</code>
 
 <h2></h2>
 
@@ -657,7 +657,7 @@
 <h4>Authorized Users:</h4>
 <p>Only Students</p>
 
-<code> POST   /v1/tutors/:subject_id</code>
+<code> GET   /v1/tutors/subjects/:subject_id</code>
 
 <h1></h1>
 

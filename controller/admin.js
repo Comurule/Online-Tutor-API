@@ -427,7 +427,7 @@ let admin = {
                     if(!categoryName){ throw new Error()} 
                 const  subjectName = await Subject.findOne({name: req.body.subject, schoolCategory: categoryName._id})
                     if(!subjectName){throw new Error()};
-                const  tutorUser = await User.findOne({userName:req.body.tutor, userCategory:'tutor'})
+                const  tutorUser = await User.findOne({userName: req.body.tutor, userCategory:'tutor'})
                     if(!tutorUser){throw new Error()};
                     
                    //set parameters
@@ -441,7 +441,7 @@ let admin = {
 
                 //check if lesson exists then read
                 let lesson = await Lesson.findById(_id)
-                console.log(3);
+                
                  
                      if(!lesson){
                          res.status(400)
@@ -461,7 +461,7 @@ let admin = {
                         await oldTutor.save()
                     //delete student from current subject
                     let oldSubject = await Subject.findById(lesson.subject)
-                    oldSubject.students = oldSubject.students.filter(items=>items!=(lesson.student))
+                    oldSubject.students = oldSubject.students.filter(items=>items == (lesson.student))
                         await oldSubject.save()
                 
                  
@@ -524,13 +524,17 @@ let admin = {
 
                     //delete from student
                     let studentUser = await User.findById(lesson.student)
-                    console.log(studentUser.lessons);
-                    studentUser.lessons = studentUser.lessons.filter(items=>items !==(lesson._id))
+                    
+                    studentUser.lessons = studentUser.lessons.filter(items=>items ==(lesson._id))
                         await studentUser.save()
                     //delete from tutor
                     let tutorUser = await User.findById(lesson.tutor)
-                    tutorUser.lessons = tutorUser.lessons.filter(items=>items !==(lesson._id))
+                    tutorUser.lessons = tutorUser.lessons.filter(items=>items ==(lesson._id))
                         await tutorUser.save()
+                    //delete student from subjett schema
+                    let oldSubject = await Subject.findById(lesson.subject)
+                    oldSubject.students = oldSubject.students.filter(items=>items==(lesson.student))
+                        await oldSubject.save()
 
                  //delete lesson
                  await Lesson.deleteOne({_id: lesson._id})
@@ -613,7 +617,7 @@ let admin = {
                                     res.status(200)
                                         .send({
                                             status:true,
-                                            message: 'Update Successful',
+                                            message: 'Updated successfully',
                                             user
                                             
                                         });

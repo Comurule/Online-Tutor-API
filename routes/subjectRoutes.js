@@ -9,7 +9,7 @@ const auth = require('../controller/token');
 
 
 router.post('/register', auth.tutorAuth, Tutor.subject.create);
-router.get('/:tutor_id', auth.tutorAuth, Tutor.subject.getAll);
+router.get('/tutors/:tutor_id', auth.tutorAuth, Tutor.subject.getAll);
 // router.post('/v1/tutors/:subject_id',auth.tutorAuth, Admin.subject.update);//a registered subject
 // router.delete('/v1/tutors/:subject_',auth.tutorAuth, Admin.subject.delete);
 
