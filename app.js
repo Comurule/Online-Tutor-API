@@ -1,11 +1,21 @@
 const mongoose = require("mongoose");
 const express = require('express');
 const app = express();
-const authRoutes = require("./routes/auth");
- 
+const routes = require("./routes");
+const port = process.env.PORT || 3000;
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(authRoutes);
+app.use('/v1', routes);
+
+app.use('*', (req, res, next) => {
+    res.status(404)
+        .json({
+      message: 'Well, will you help build this route? 🤷🏼‍♂️'
+        });
+    next();
+  });
 
 
 mongoose.connect(
@@ -14,6 +24,8 @@ mongoose.connect(
     )
     .then(result => {
         console.log("Database connected");
-        app.listen(3000);
+        app.listen(port, ()=>{
+            console.log(`Server running at port `+port);
+        });
     })
     .catch(err => console.log(err));

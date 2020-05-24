@@ -1,4 +1,64 @@
-<h1>Online-Tutor-API-v1||Features</h1>
+<h1>Online-Tutor-API</h1>
+
+<h2>Online-Tutor-API-v1 || Introduction</h2>
+<p><strong>Online Tutor API</strong> is a simple Back-End app that handles the Academic functions of a school online(Primary and Secondary schools), fully built with ExpressJS and a MongooseDB. </p>
+
+<br/>
+
+<h2>Online-Tutor-API-v1 || Table Of Contents</h2>
+
+<ul>
+<li><a href='#link-to-the-hosted-app'>Link to the hosted App</a></li>
+<li><a href='#tech-stack-used'>Tech Stack Used</a></li>
+<li><a href='#how-to-use'>How To Use</a></li>
+<li><a href='#application-features'>Application Features</a></li>
+<li><a href='#author'>Author</a></li>
+</ul>
+
+<h1></h1>
+
+<h2 id='link-to-the-hosted-app'>Online-Tutor-API-v1 || Link To The Hosted App</h2>
+<a href='https://snosch.herokuapp.com/'>Link To Heroku Website</a>
+
+<h1></h1>
+
+<h2 id='tech-stack-used'>Online-Tutor-API-v1 || Tech Stack Used</h2>
+<ul>
+<li>NodeJS</li>
+<li>ExpressJS</li>
+<li>Git</li>
+<li>Json Web Token</li>
+<li>Code Editor (vscode)</li>
+<li>MongooseDB</li>
+<li>Postman</li>
+</ul>
+<h1></h1>
+
+<h2 id='how-to-use'>Online-Tutor-API-v1 || How To Use</h2>
+<strong>==></strong> Download and install <a href='http://www.postman.com'>Postman</a>.<br/>
+<strong>==></strong> Simply copy the <a href='#link-to-the-hosted-app'>hosted link</a> to Heroku and paste in the url section of the installed postman to test the Endpoints using the <a href='#application-features'>API Features</a> as guide.<br/>
+<strong>==></strong> Use the Admin details below to access Admin privileges.
+ 
+<h3>Admin Details</h3>
+
+<h4>King Abesh</h4>
+<pre>   
+    userName:KingAbesh
+    email:abesh@gmail.com
+    password:hello
+</pre>
+<br/>
+
+<h4>IDM Calculus</h4>
+<pre>   
+    userName:IDMCalculus
+    email:idm@gmail.com
+    password:hello
+</pre>
+
+<h1></h1>
+
+<h2 id='application-features'>Online-Tutor-API-v1||Features</h2>
 
 <a href="#1">Register API</a><br/>
 <a href='#2'>Login API</a><br/>
@@ -24,12 +84,12 @@
 <a href='#22'>Retrieve All Tutors in a Subject API</a><br/>
 
 
-<h2 id='1'>Online-Tutor-API-v1||Register API</h2>
+<h3 id='1'>Online-Tutor-API-v1||Register API</h3>
 <p> The <strong>Register API</strong> enables a user to create a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section.</p>
 
 <code> POST   /v1/register</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -74,7 +134,7 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
             firstName:IDM 
             lastName:Calculus
@@ -86,17 +146,17 @@
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='2'>Online-Tutor-API-v1||Login API</h2>
+<h3 id='2'>Online-Tutor-API-v1||Login API</h3>
 <p> The <strong>Login API</strong> enables a registered user to log into a profile in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and copy the token given on response for further authorized activities.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All registered users</p>
 
 <code> POST   /v1/login</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -116,24 +176,24 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
             userName:IDMCalculus
             password:hello
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='3'>Online-Tutor-API-v1||Retrieve all subjects API</h2>
+<h3 id='3'>Online-Tutor-API-v1||Retrieve all subjects API</h3>
 <p> The <strong>Retrieve all subjects API</strong> enables a registered user to retrieve all subjects in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All registered users</p>
 
 <code> GET   /v1/subjects</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -152,43 +212,43 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
             sort:name:1
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='4'>Online-Tutor-API-v1||Retrieve a subject API</h2>
-<p> The <strong>Retrieve a subject in a category by Id API</strong> enables a registered user to retrieve a subject by Id in a category in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='4'>Online-Tutor-API-v1||Retrieve a subject API</h3>
+<p> The <strong>Retrieve a subject in a category by Id API</strong> enables a registered user to retrieve a subject by Id in a category in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All registered users</p>
 
-<code> GET   /v1/:category/:subject_id</code>
+<code> GET   /v1/subjects/:subject_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='5'>Online-Tutor-API-v1||Retrieve all categories API</h2>
+<h3 id='5'>Online-Tutor-API-v1||Retrieve all categories API</h3>
 <p> The <strong>Retrieve all categories API</strong> enables a registered user to retrieve all categories in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All registered users</p>
 
 <code> GET   /v1/category</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='6'>Online-Tutor-API-v1||Retrieve all Tutors API</h2>
+<h3 id='6'>Online-Tutor-API-v1||Retrieve all Tutors API</h3>
 <p> The <strong>Retrieve all Tutors API</strong> enables a registered user to retrieve all Tutors in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All Admins and students</p>
 
 <code> GET   /v1/tutors</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -203,23 +263,23 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            sort:firstName:1
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='7'>Online-Tutor-API-v1||Create a Subject API</h2>
+<h3 id='7'>Online-Tutor-API-v1||Create a Subject API</h3>
 <p> The <strong>Create a Subject API</strong> enables a registered admin to create a subject in any created category in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> POST   /v1/subjects</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -239,24 +299,24 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            name:maths
            category:primary
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='8'>Online-Tutor-API-v1||Update a Subject API</h2>
+<h3 id='8'>Online-Tutor-API-v1||Update a Subject API</h3>
 <p> The <strong>Update a Subject API</strong> enables a registered user to update a subject by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins and Tutors</p>
 
 <code> POST   /v1/subjects/:subject_id</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -276,34 +336,34 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            name:maths
            category:primary
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='9'>Online-Tutor-API-v1||Delete a Subject API</h2>
-<p> The <strong>Delete a Subject API</strong> enables a registered user to delete a subject by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='9'>Online-Tutor-API-v1||Delete a Subject API</h3>
+<p> The <strong>Delete a Subject API</strong> enables a registered user to delete a subject by Id in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins and Tutors</p>
 
 <code> DELETE   /v1/subjects/:subject_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='10'>Online-Tutor-API-v1||Create a Category API</h2>
+<h3 id='10'>Online-Tutor-API-v1||Create a Category API</h3>
 <p> The <strong>Create a Category API</strong> enables a registered admin to create a category in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> POST   /v1/category</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -318,23 +378,23 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            name:primary
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='11'>Online-Tutor-API-v1||Update a Category API</h2>
+<h3 id='11'>Online-Tutor-API-v1||Update a Category API</h3>
 <p> The <strong>Update a Category API</strong> enables a registered admin to update a category by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> POST   /v1/category/:category_id</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -349,33 +409,33 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            name:primary
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='12'>Online-Tutor-API-v1||Delete a Category API</h2>
-<p> The <strong>Delete a Category API</strong> enables a registered admin to delete a category by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='12'>Online-Tutor-API-v1||Delete a Category API</h3>
+<p> The <strong>Delete a Category API</strong> enables a registered admin to delete a category by Id in the database. Note that deleting a category, deletes all subjects under it.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> DELETE   /v1/category/:category_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='13'>Online-Tutor-API-v1||Book a Lesson API</h2>
+<h3 id='13'>Online-Tutor-API-v1||Book a Lesson API</h3>
 <p> The <strong>Book a Lesson API</strong> enables a registered admin or student to book a Lesson. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins and Students</p>
 
 <code> POST   /v1/lessons</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -405,7 +465,7 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            student:comurule
            subject:maths
@@ -414,17 +474,17 @@
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='14'>Online-Tutor-API-v1||Update a Lesson API</h2>
+<h3 id='14'>Online-Tutor-API-v1||Update a Lesson API</h3>
 <p> The <strong>Update a Lesson API</strong> enables a registered admin to update a lesson by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> POST   /v1/lessons/:lesson_id</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -454,7 +514,7 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            student:comurule
            subject:maths
@@ -463,47 +523,47 @@
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='15'>Online-Tutor-API-v1||Delete a Lesson API</h2>
-<p> The <strong>Delete a Lesson API</strong> enables a registered admin to delete a lesson by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='15'>Online-Tutor-API-v1||Delete a Lesson API</h3>
+<p> The <strong>Delete a Lesson API</strong> enables a registered admin to delete a lesson by Id in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> DELETE   /v1/lessons/:lesson_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='16'>Online-Tutor-API-v1||Retrieve a Lesson API</h2>
-<p> The <strong>Retrieve a Lesson API</strong> enables a registered admin to retrieve a lesson by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='16'>Online-Tutor-API-v1||Retrieve a Lesson API</h3>
+<p> The <strong>Retrieve a Lesson API</strong> enables a registered admin to retrieve a lesson by Id in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All Admins</p>
 
 <code> GET   /v1/lessons/:lesson_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='17'>Online-Tutor-API-v1||Retrieve all Lessons API</h2>
-<p> The <strong>Retrieve all Lessons API</strong> enables a registered admin to retrieve all lessons in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='17'>Online-Tutor-API-v1||Retrieve all Lessons API</h3>
+<p> The <strong>Retrieve all Lessons API</strong> enables a registered admin to retrieve all lessons in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All Admins</p>
 
 <code> GET   /v1/lessons</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='18'>Online-Tutor-API-v1||Update a Tutor API</h2>
+<h3 id='18'>Online-Tutor-API-v1||Update a Tutor API</h3>
 <p> The <strong>Update a Tutor API</strong> enables a registered admin to deactivate a tutor by Id (changing the tutor to a student), and make a tutor an admin the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Admins</p>
 
 <code> POST   /v1/tutors/:tutor_id</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -524,34 +584,35 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            admin:true
            userCategory:tutor
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='19'>Online-Tutor-API-v1||Retrieve a Tutor API</h2>
-<p> The <strong>Retrieve a Tutor API</strong> enables a registered admin to retrieve a tutor by Id in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='19'>Online-Tutor-API-v1||Retrieve a Tutor API</h3>
+<p> The <strong>Retrieve a Tutor API</strong> enables a registered admin to retrieve a tutor by Id in the database. 
+</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>All Admins</p>
 
 <code> GET   /v1/tutors/:tutor_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='20'>Online-Tutor-API-v1||Register a Subject API</h2>
+<h3 id='20'>Online-Tutor-API-v1||Register a Subject API</h3>
 <p> The <strong>Register a Subject API</strong> enables a registered tutor to register a subject in the tutor's category in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Tutors</p>
 
 <code> POST   /v1/subjects/register</code>
 
-<div><h3>Parameters</h3>
+<div><h4>Parameters</h4>
     <table>
         <tr>
             <th>Name</th>
@@ -571,31 +632,34 @@
     </table>
 </div>
 <div>
-    <h3>Example</h3>
+    <h4>Example</h4>
         <pre>
            name:maths
            category:primary
         </pre>
 </div>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='21'>Online-Tutor-API-v1||Retrieve All Registered Subjects API</h2>
-<p> The <strong>Retrieve All Registered Subjects API</strong> enables a registered tutor to retrieve all registered subjects in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='21'>Online-Tutor-API-v1||Retrieve All Registered Subjects API</h3>
+<p> The <strong>Retrieve All Registered Subjects API</strong> enables a registered tutor to retrieve all registered subjects in the database.</p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Tutors</p>
 
-<code> POST   /v1/subjects/:tutor_id</code>
+<code> GET   /v1/subjects/tutors/:tutor_id</code>
 
-<h1></h1>
+<h2></h2>
 
-<h2 id='22'>Online-Tutor-API-v1||Retrieve All Tutors In A Subject API</h2>
-<p> The <strong>Retrieve All Tutors In A Subject API</strong> enables a registered student to retrieve all tutors registered to a  subject in the database. Please, fill in the <strong>x-www-form-urlencoded</strong> in the <strong>body</strong> section and also the token given on <strong>Login</strong> should be copied to the <strong>Bearer Token</strong> in the <strong>Authorization</strong> section.</p>
+<h3 id='22'>Online-Tutor-API-v1||Retrieve All Tutors In A Subject API</h3>
+<p> The <strong>Retrieve All Tutors In A Subject API</strong> enables a registered student to retrieve all tutors registered to a  subject in the database. </p>
 
-<h3>Authorized Users:</h3>
+<h4>Authorized Users:</h4>
 <p>Only Students</p>
 
-<code> POST   /v1/tutors/:subject_id</code>
+<code> GET   /v1/tutors/subjects/:subject_id</code>
 
 <h1></h1>
+
+<h2 id='author'>Online-Tutor-API-v1 || Author</h2>
+<p><strong>Chibuike Umechukwu</strong></p>
