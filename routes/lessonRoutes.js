@@ -1,16 +1,18 @@
 const router = require('express').Router();
+const Lesson = require('../controller/lessonController');
 
-const Admin = require('../controller/admin');
+const {
+    get_a_lesson,
+    update_a_lesson,
+    book_a_lesson,
+    getAll_lessons,
+    delete_a_lesson
+} = Lesson;
 
-const auth = require('../controller/token');
-
-
-
-router.get('/:lesson_id', auth.adminAuth, Admin.lesson.get);
-router.post('/:lesson_id', auth.adminAuth, Admin.lesson.update);
-router.delete('/:lesson_id', auth.adminAuth, Admin.lesson.delete);
-router.post('/', auth.AdminStudent, Admin.lesson.create);//for both admins and students
-router.get('/', auth.adminAuth, Admin.lesson.getAll);
-
+router.get('/:lesson_id', get_a_lesson);
+router.post('/:lesson_id', update_a_lesson);
+router.delete('/:lesson_id', delete_a_lesson);
+router.post('/', book_a_lesson);//for both admins and students
+router.get('/', getAll_lessons);
 
 module.exports = router;

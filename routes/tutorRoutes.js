@@ -1,16 +1,18 @@
-const router = require ('express').Router();
-const Person = require('../controller/auth');
-const Admin = require('../controller/admin');
+const router = require('express').Router();
+const Tutor = require('../controller/tutorController');
+const {
+    get_a_tutor,
+    update_a_tutor,
+    getAll_tutors_by_subject,
+    getAll_tutors
+} = Tutor;
 
-const Student = require('../controller/student');
-const auth = require('../controller/token');
-
-router.get('/:tutor_id', auth.adminAuth, Admin.tutor.get);
-router.post('/:tutor_id', auth.adminAuth, Admin.tutor.update);//for both deactivating and assigning admin status
-router.get('/subjects/:subject_id/', auth.studentAuth, Student.subject.getAll);//in a category
+router.get('/:tutor_id', get_a_tutor);
+router.post('/:tutor_id', update_a_tutor);//for both deactivating and assigning admin status
+router.get('/subjects/:subject_id', getAll_tutors_by_subject);//in a category
 // router.get('/v1/lesson', auth.studentAuth, Admin.lesson.create);//copy Admin.lesson.create
 
-router.get('/', auth.AdminStudent, Person.tutor.getAll);
+router.get('/', getAll_tutors);
 //by firstname, sorted alphabetically in ascending order
 
 
